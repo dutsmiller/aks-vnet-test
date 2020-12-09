@@ -73,7 +73,7 @@ resource "random_string" "random" {
 }
 
 resource "azurerm_resource_group" "no_vnet" {
-  name     = "akstest-random_string.random.result"
+  name     = "akstest-${random_string.random.result}"
   location = "East US 2"
 }
 
