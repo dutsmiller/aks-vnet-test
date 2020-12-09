@@ -180,6 +180,20 @@ data "kubernetes_service" "vnet_apache" {
   }
 }
 
+#resource "azurerm_network_security_rule" "vnet_allow_apache" {
+#  name                        = "AllowApache"
+#  priority                    = 100
+#  direction                   = "Inbound"
+#  access                      = "Allow"
+#  protocol                    = "tcp"
+#  source_port_range           = "*"
+#  destination_port_range      = "80"
+#  source_address_prefix       = "Internet"
+#  destination_address_prefix  = data.kubernetes_service.vnet_apache.load_balancer_ingress.0.ip
+#  resource_group_name         = azurerm_resource_group.vnet.name
+#  network_security_group_name = azurerm_network_security_group.nsg.name
+#}
+
 output "no_vnet_apache_ip" {
   value = data.kubernetes_service.no_vnet_apache.load_balancer_ingress.0.ip
 }
