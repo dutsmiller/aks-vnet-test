@@ -157,6 +157,7 @@ resource "helm_release" "no_vnet_apache" {
 }
 
 resource "helm_release" "vnet_apache" {
+  depends_on = [azurerm_role_assignment.subnet_network_contributor]
   provider   = helm.vnet
   name       = "apache"
   repository = "bitnami"
@@ -164,14 +165,16 @@ resource "helm_release" "vnet_apache" {
 }
 
 data "kubernetes_service" "no_vnet_apache" {
-  provider = kubernetes.no_vnet
+  depends_on = [helm_release.no_vnet_apache] 
+  provider   = kubernetes.no_vnet
   metadata {
     name = "apache"
   }
 }
 
 data "kubernetes_service" "vnet_apache" {
-  provider = kubernetes.vnet
+  depends_on = [helm_release.vnet_apache] 
+  provider   = kubernetes.vnet
   metadata {
     name = "apache"
   }
